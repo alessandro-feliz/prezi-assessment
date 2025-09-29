@@ -1,8 +1,10 @@
 ﻿using Caliburn.Micro;
 using Napps.Windows.Assessment.Configuration;
 using Napps.Windows.Assessment.Logger;
-using Napps.Windows.Assessment.Repositories;
-using Napps.Windows.Assessment.Repositories.Impl;
+using Napps.Windows.Assessment.Repositories.Presentations;
+using Napps.Windows.Assessment.Repositories.Presentations.Interfaces;
+using Napps.Windows.Assessment.Services;
+using Napps.Windows.Assessment.Services.Interfaces;
 using Napps.Windows.Assessment.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -35,9 +37,22 @@ namespace Napps.Windows.Assessment.Utils
 			container.Singleton<IWindowManager, WindowManager>();
 			container.Singleton<ICrashReporter, CrashReporter>();
 
-            container.Singleton<IPresentationRepository, ApiPresentationRepository>();
+            container.Singleton<PresentationApiRepository>();
+            container.Singleton<PresentationFileRepository>();
+            container.Singleton<IJsonSerializerService, JsonSerializerService>();
+            container.Singleton<IFileSerializerService, BinarySerializerService>();
+            container.Singleton<IThumbnailService, ThumbnailService>();
 
-			container.Singleton<IMainViewModel, MainViewModel>();
+            container.Handler<IPresentationWriter>(c => c.GetInstance<PresentationFileRepository>());
+            container.Handler<IPresentationReader>(c =>
+                new PresentationFallbackRepository(
+                    c.GetInstance<ILogger>(),
+                    c.GetInstance<PresentationApiRepository>(),
+                    c.GetInstance<PresentationFileRepository>()
+                )
+            );
+
+            container.Singleton<IMainViewModel, MainViewModel>();
 			container.PerRequest<IPresentationListViewModel, PresentationListViewModel>();
 
             container.Handler<IDependencyContainer>(simpleContainer => new DependencyContainer(simpleContainer));

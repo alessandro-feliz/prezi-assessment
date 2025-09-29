@@ -2,6 +2,7 @@
 
 namespace Napps.Windows.Assessment.Domain
 {
+    [Serializable]
     public class Name
     {
         public string FirstName { get; private set; }

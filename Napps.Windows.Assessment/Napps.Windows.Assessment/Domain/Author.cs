@@ -2,6 +2,7 @@
 
 namespace Napps.Windows.Assessment.Domain
 {
+    [Serializable]
     public class Author
     {
         public string Id { get; private set; }

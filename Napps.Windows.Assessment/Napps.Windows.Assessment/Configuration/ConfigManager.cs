@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.IO;
 
 namespace Napps.Windows.Assessment.Configuration
 {
@@ -21,7 +22,10 @@ namespace Napps.Windows.Assessment.Configuration
             return new Config()
             {
                 PresentationsEndpoint = presentationsEndpoint,
-                PresentationsEndpointTimeout = TimeSpan.FromSeconds(timeoutSecs)
+                PresentationsEndpointTimeout = TimeSpan.FromSeconds(timeoutSecs),
+                ApplicationFolder = AppDomain.CurrentDomain.BaseDirectory,
+                ThumbnailFolder = "Thumbnails",
+                PresentationslFile = Path.Combine("Presentations", "Presentations.bin")
             };
         }
     }

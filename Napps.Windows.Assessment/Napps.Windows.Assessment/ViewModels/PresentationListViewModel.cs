@@ -1,6 +1,6 @@
 ﻿using Caliburn.Micro;
 using Napps.Windows.Assessment.Domain;
-using Napps.Windows.Assessment.Repositories;
+using Napps.Windows.Assessment.Repositories.Presentations.Interfaces;
 using System;
 using System.Collections.ObjectModel;
 using System.Threading;
@@ -15,13 +15,13 @@ namespace Napps.Windows.Assessment.ViewModels
 
     internal class PresentationListViewModel : Screen, IPresentationListViewModel
     {
-        private readonly IPresentationRepository _presentationRepository;
+        private readonly IPresentationReader _fallbackPresentationRepository;
 
         public ObservableCollection<Presentation> Presentations { get; set; } = new ObservableCollection<Presentation>();
 
-        public PresentationListViewModel(IPresentationRepository presentationRepository)
+        public PresentationListViewModel(IPresentationReader fallbackPresentationRepository)
         {
-            _presentationRepository = presentationRepository ?? throw new ArgumentNullException(nameof(presentationRepository));
+            _fallbackPresentationRepository = fallbackPresentationRepository ?? throw new ArgumentNullException(nameof(fallbackPresentationRepository));
         }
 
         protected override async Task OnActivateAsync(CancellationToken cancellationToken)
@@ -31,7 +31,7 @@ namespace Napps.Windows.Assessment.ViewModels
 
         public async Task InitializeAsync()
         {
-            var presentations = await _presentationRepository.GetAllAsync();
+            var presentations = await _fallbackPresentationRepository.LoadAsync();
 
             Presentations.Clear();
             foreach (var presentation in presentations)

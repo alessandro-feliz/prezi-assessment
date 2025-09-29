@@ -173,7 +173,6 @@
     </ApplicationDefinition>
     <Compile Include="Configuration\Config.cs" />
     <Compile Include="Configuration\ConfigManager.cs" />
-    <Compile Include="Configuration\Constants.cs" />
     <Compile Include="Domain\Author.cs" />
     <Compile Include="Domain\Name.cs" />
     <Compile Include="Domain\Presentation.cs" />
@@ -183,8 +182,17 @@
     <Compile Include="Dto\PresentationsDto.cs" />
     <Compile Include="Logger\ILogger.cs" />
     <Compile Include="Logger\NLogger.cs" />
-    <Compile Include="Repositories\Impl\ApiPresentationRepository.cs" />
-    <Compile Include="Repositories\IPresentationRepository.cs" />
+    <Compile Include="Repositories\Presentations\PresentationApiRepository.cs" />
+    <Compile Include="Repositories\Presentations\PresentationFileRepository.cs" />
+    <Compile Include="Repositories\Presentations\PresentationFallbackRepository.cs" />
+    <Compile Include="Repositories\Presentations\Interfaces\IPresentationReader.cs" />
+    <Compile Include="Repositories\Presentations\Interfaces\IPresentationWriter.cs" />
+    <Compile Include="Services\BinarySerializerService.cs" />
+    <Compile Include="Services\Interfaces\IFileSerializerService.cs" />
+    <Compile Include="Services\Interfaces\IJsonSerializerService.cs" />
+    <Compile Include="Services\Interfaces\IThumbnailService.cs" />
+    <Compile Include="Services\JsonSerializerService.cs" />
+    <Compile Include="Services\ThumbnailService.cs" />
     <Compile Include="Utils\Bootstrapper.cs" />
     <Compile Include="Utils\CrashReporter.cs" />
     <Compile Include="Utils\DependencyContainer.cs" />
@@ -235,6 +243,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
