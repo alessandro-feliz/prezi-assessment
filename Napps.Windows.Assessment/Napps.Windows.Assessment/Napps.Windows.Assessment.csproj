@@ -173,11 +173,20 @@
     </ApplicationDefinition>
     <Compile Include="Configuration\Config.cs" />
     <Compile Include="Configuration\ConfigManager.cs" />
+    <Compile Include="Controls\StatusControl.xaml.cs">
+      <DependentUpon>StatusControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\ImageSourceToBitmapConverter.cs" />
     <Compile Include="Converters\PrivacyEnumToStringConverter.cs" />
+    <Compile Include="Converters\ProgressStatusEnumToBrushConverter.cs" />
     <Compile Include="Domain\Author.cs" />
     <Compile Include="Domain\Name.cs" />
     <Compile Include="Domain\Presentation.cs" />
+    <Compile Include="Domain\PresentationsLoadResult.cs" />
     <Compile Include="Domain\Privacy.cs" />
+    <Compile Include="Domain\ProgressStatus.cs" />
+    <Compile Include="Domain\Status.cs" />
+    <Compile Include="Domain\Mode.cs" />
     <Compile Include="Dto\OwnerDto.cs" />
     <Compile Include="Dto\PresentationDto.cs" />
     <Compile Include="Dto\PresentationsDto.cs" />
@@ -203,12 +212,16 @@
     <Compile Include="Views\PresentationDetailView.xaml.cs">
       <DependentUpon>PresentationDetailView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PresentationListItemView.xaml.cs">
-      <DependentUpon>PresentationListItemView.xaml</DependentUpon>
+    <Compile Include="Controls\PresentationListItemControl.xaml.cs">
+      <DependentUpon>PresentationListItemControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PresentationListView.xaml.cs">
       <DependentUpon>PresentationListView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Controls\StatusControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles\ButtonStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -241,7 +254,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\PresentationListItemView.xaml">
+    <Page Include="Controls\PresentationListItemControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -283,6 +296,11 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\prezi.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\prezi_logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

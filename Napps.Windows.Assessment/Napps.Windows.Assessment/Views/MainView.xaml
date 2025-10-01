@@ -6,12 +6,17 @@
         xmlns:local="clr-namespace:Napps.Windows.Assessment.Views"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:res="clr-namespace:Napps.Windows.Assessment.Properties"
+        xmlns:controls="clr-namespace:Napps.Windows.Assessment.Controls"
         Title="{x:Static res:Resources.ApplicationTitle}"
         Icon="/Assets/prezi.ico"
         MinWidth="800"
         MinHeight="600"
         mc:Ignorable="d">
-	<Grid>
-		<ContentControl cal:View.Model="{Binding ActiveItem}" />
-	</Grid>
+    <DockPanel>
+        
+        <controls:StatusControl DataContext="{Binding Status}" DockPanel.Dock="Bottom" />
+
+        <ContentControl cal:View.Model="{Binding ActiveItem}" />
+
+    </DockPanel>
 </Window>

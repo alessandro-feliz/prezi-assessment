@@ -18,15 +18,13 @@
             <RowDefinition Height="Auto"/>
             <!-- Details & Thumbnail -->
             <RowDefinition Height="*"/>
-            <!-- Go Back button -->
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <Button Grid.Row="0" Content="{x:Static res:Resources.GoBack}" Style="{StaticResource LinkButtonStyle}"
                 cal:Message.Attach="[Event Click] = [Action ShowPresentationListAsync()]"/>
 
         <!-- Title -->
-        <TextBlock Grid.Row="1" Text="{Binding Presentation.Title, FallbackValue=Title}" Style="{StaticResource Title}" />
+        <TextBlock Grid.Row="1" Text="{Binding Presentation.Title}" Style="{StaticResource Title}" />
 
         <!-- Details & Thumbnail -->
         <Grid Grid.Row="2">
@@ -42,28 +40,28 @@
             <StackPanel Grid.Column="0">
                 <!-- Author -->
                 <TextBlock Text="{x:Static res:Resources.Author}" Style="{StaticResource Label}"/>
-                <TextBlock Text="{Binding Presentation.Author.Name.FullName, FallbackValue=Author}" Style="{StaticResource Header1}"/>
+                <TextBlock Text="{Binding Presentation.Author.Name.FullName}" Style="{StaticResource Header1}"/>
+
+                <!-- Privacy -->
+                <TextBlock Text="{x:Static res:Resources.Privacy}" Style="{StaticResource Label}"/>
+                <TextBlock Text="{Binding Presentation.Privacy,  Converter={StaticResource PrivacyEnumToStringConverter}}" Style="{StaticResource Header2}"/>
 
                 <!-- Date -->
                 <TextBlock Text="{x:Static res:Resources.ModifiedDate}" Style="{StaticResource Label}"/>
-                <TextBlock Text="{Binding Presentation.LastModified, FallbackValue=Date}" Style="{StaticResource Header2}"/>
+                <TextBlock Text="{Binding Presentation.LastModified}" Style="{StaticResource Header2}"/>
 
                 <!-- Description -->
                 <TextBlock Text="{x:Static res:Resources.Description}" Style="{StaticResource Label}"/>
-                <TextBlock Text="{Binding Presentation.Description, FallbackValue=Description}" Style="{StaticResource Header2}" TextWrapping="Wrap" TextAlignment="Justify" />
+                <TextBlock Text="{Binding Presentation.Description}" Style="{StaticResource Header2}" TextWrapping="Wrap" TextAlignment="Justify" />
             </StackPanel>
 
             <!-- Thumbnail -->
             <Grid Grid.Column="1">
                 <Border Grid.Column="1" BorderBrush="LightGray" BorderThickness="1" Margin="32">
-                    <Image Source="{Binding Presentation.ThumbnaiFile}" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Image Source="{Binding Presentation.ThumbnailFile, Converter={StaticResource ImageSourceToBitmapConverter}}" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Border>
             </Grid>
 
         </Grid>
-
-        <Button Grid.Row="3" Content="{x:Static res:Resources.GoBack}" Style="{StaticResource LinkButtonStyle}"
-                cal:Message.Attach="[Event Click] = [Action ShowPresentationListAsync()]"/>
-
     </Grid>
 </UserControl>
