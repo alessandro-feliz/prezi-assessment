@@ -1,0 +1,51 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:properties="clr-namespace:Napps.Windows.Assessment.Properties">
+
+    <Style x:Key="PresentationItemHoverableStyle" TargetType="ContentControl">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ContentControl">
+                    <Border BorderBrush="LightGray"
+                            BorderThickness="1"
+                            SnapsToDevicePixels="True"
+                            MaxWidth="250" MaxHeight="150">
+                        <Grid>
+                            <!-- Main content -->
+                            <ContentPresenter />
+
+                            <!-- Hover overlay with darker fill -->
+                            <Rectangle x:Name="HoverOverlay"
+                                       Fill="Transparent"
+                                      
+                                       Panel.ZIndex="1" />
+
+                            <!-- White hover text, centered -->
+                            <TextBlock x:Name="HoverText"
+                                       Text="{x:Static properties:Resources.ClickForDetails}"
+                                       Foreground="White"
+                                       FontWeight="Bold"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Opacity="0"
+                                       Panel.ZIndex="2" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <!-- Darker overlay color -->
+                            <Setter TargetName="HoverOverlay" Property="Fill" Value="#99000000" />
+                            <!-- Show the text -->
+                            <Setter TargetName="HoverText" Property="Opacity" Value="1" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

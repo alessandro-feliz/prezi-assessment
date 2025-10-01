@@ -14,28 +14,28 @@ using System.Windows.Threading;
 
 namespace Napps.Windows.Assessment.Utils
 {
-	internal class Bootstrapper : BootstrapperBase
-	{
-		private SimpleContainer container;
+    internal class Bootstrapper : BootstrapperBase
+    {
+        private SimpleContainer container;
 
-		public Bootstrapper()
-		{
-			Initialize();
-		}
+        public Bootstrapper()
+        {
+            Initialize();
+        }
 
-		protected override void Configure()
-		{
-			container = new SimpleContainer();
-
-			var config = ConfigManager.LoadFromFile();
-            container.Instance(config);
+        protected override void Configure()
+        {
+            container = new SimpleContainer();
+            container.Instance(container);
 
             container.Singleton<ILogger, NLogger>();
+            container.Singleton<IWindowManager, WindowManager>();
+            container.Singleton<ICrashReporter, CrashReporter>();
+
+            var config = ConfigManager.LoadFromFile();
+            container.Instance(config);
 
             container.Instance(new HttpClient() { Timeout = config.PresentationsEndpointTimeout });
-
-			container.Singleton<IWindowManager, WindowManager>();
-			container.Singleton<ICrashReporter, CrashReporter>();
 
             container.Singleton<PresentationApiRepository>();
             container.Singleton<PresentationFileRepository>();
@@ -53,34 +53,35 @@ namespace Napps.Windows.Assessment.Utils
             );
 
             container.Singleton<IMainViewModel, MainViewModel>();
-			container.PerRequest<IPresentationListViewModel, PresentationListViewModel>();
+            container.PerRequest<IPresentationListViewModel, PresentationListViewModel>();
+            container.PerRequest<IPresentationDetailViewModel, PresentationDetailViewModel>();
 
             container.Handler<IDependencyContainer>(simpleContainer => new DependencyContainer(simpleContainer));
-		}
+        }
 
-		protected override object GetInstance(Type service, string key)
-		{
-			return container.GetInstance(service, key);
-		}
+        protected override object GetInstance(Type service, string key)
+        {
+            return container.GetInstance(service, key);
+        }
 
-		protected override IEnumerable<object> GetAllInstances(Type service)
-		{
-			return container.GetAllInstances(service);
-		}
+        protected override IEnumerable<object> GetAllInstances(Type service)
+        {
+            return container.GetAllInstances(service);
+        }
 
-		protected override void BuildUp(object instance)
-		{
-			container.BuildUp(instance);
-		}
+        protected override void BuildUp(object instance)
+        {
+            container.BuildUp(instance);
+        }
 
-		protected override async void OnStartup(object sender, StartupEventArgs e)
-		{
-			await DisplayRootViewForAsync<IMainViewModel>();
-		}
+        protected override async void OnStartup(object sender, StartupEventArgs e)
+        {
+            await DisplayRootViewForAsync<IMainViewModel>();
+        }
 
-		protected override void OnUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
-		{
-			base.OnUnhandledException(sender, e);
-		}
-	}
+        protected override void OnUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            base.OnUnhandledException(sender, e);
+        }
+    }
 }

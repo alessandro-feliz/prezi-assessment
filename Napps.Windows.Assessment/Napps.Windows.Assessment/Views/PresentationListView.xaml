@@ -5,21 +5,44 @@
              xmlns:local="clr-namespace:Napps.Windows.Assessment.Views"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:views="clr-namespace:Napps.Windows.Assessment.Views"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:res="clr-namespace:Napps.Windows.Assessment.Properties"
              d:DesignHeight="450"
              d:DesignWidth="800"
              mc:Ignorable="d">
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-        <ItemsControl ItemsSource="{Binding Presentations}">
-            <ItemsControl.ItemsPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Page title and instruction -->
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="{x:Static res:Resources.PresentationListTitle}" Style="{StaticResource Title}"/>
+            <TextBlock Text="{x:Static res:Resources.PresentationListInstructions}" Style="{StaticResource SubTitle}"/>
+        </StackPanel>
+
+        <!-- Scrollable presentations list -->
+        <ListBox Grid.Row="1"
+                 ItemsSource="{Binding Presentations}" 
+                 SelectedItem="{Binding SelectedPresentation, Mode=TwoWay}"
+                 HorizontalAlignment="Stretch"
+                 BorderThickness="0"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 ItemContainerStyle="{StaticResource PresentationItemCleanStyle}">
+
+            <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <WrapPanel Orientation="Horizontal" />
+                    <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" />
                 </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
+            </ListBox.ItemsPanel>
+
+            <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <views:PresentationListItemView Margin="10"/>
+                    <views:PresentationListItemView Margin="10" DataContext="{Binding}" />
                 </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-    </ScrollViewer>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
 </UserControl>

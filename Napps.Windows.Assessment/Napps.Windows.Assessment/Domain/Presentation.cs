@@ -12,8 +12,9 @@ namespace Napps.Windows.Assessment.Domain
         public Privacy Privacy { get; private set; }
         public DateTime LastModified { get; private set; }
         public Author Author { get; private set; }
+        public string Description { get; private set; }
 
-        public Presentation(string id, string title, string thumbnailUrl, string thumbnailFile, Privacy privacy, DateTime lastModified, Author author)
+        public Presentation(string id, string title, string thumbnailUrl, string thumbnailFile, Privacy privacy, DateTime lastModified, Author author, string description)
         {
             Id = id ?? throw new ArgumentNullException(nameof(id));
             Title = title ?? throw new ArgumentNullException(nameof(title));
@@ -22,6 +23,7 @@ namespace Napps.Windows.Assessment.Domain
             Privacy = privacy;
             LastModified = lastModified;
             Author = author;
+            Description = description ?? String.Empty;
         }
     }
 }

@@ -53,7 +53,8 @@ namespace Napps.Windows.Assessment.Repositories.Presentations
                               await _thumbnailService.DownloadAndSaveAsync(p.ThumbnailUrl, p.Id),
                               Enum.TryParse<Privacy>(p.Privacy, out var parsedPrivacy) ? parsedPrivacy : Privacy.Hidden,
                               p.LastModified,
-                              new Author(p.Owner.Id, p.Owner.FirstName, p.Owner.LastName)
+                              new Author(p.Owner.Id, p.Owner.FirstName, p.Owner.LastName),
+                              p.Description
                           )
                       );
                 }

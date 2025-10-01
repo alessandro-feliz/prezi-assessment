@@ -5,7 +5,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:Napps.Windows.Assessment.Views"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        Title="MainWindow"
+        xmlns:res="clr-namespace:Napps.Windows.Assessment.Properties"
+        Title="{x:Static res:Resources.ApplicationTitle}"
+        Icon="/Assets/prezi.ico"
         MinWidth="800"
         MinHeight="600"
         mc:Ignorable="d">

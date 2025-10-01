@@ -1,8 +1,19 @@
 ﻿<Application x:Class="Napps.Windows.Assessment.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Napps.Windows.Assessment">
+             xmlns:local="clr-namespace:Napps.Windows.Assessment"
+             xmlns:converters="clr-namespace:Napps.Windows.Assessment.Converters">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <!-- Styling -->
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles/TextStyles.xaml" />
+                <ResourceDictionary Source="/Styles/ContentControlStyles.xaml" />
+                <ResourceDictionary Source="/Styles/ListBoxItemStyles.xaml" />
+                <ResourceDictionary Source="/Styles/ButtonStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <!-- Converters -->
+            <converters:PrivacyEnumToStringConverter x:Key="PrivacyEnumToStringConverter" />
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

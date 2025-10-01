@@ -2,6 +2,7 @@
 {
     public enum Privacy
     {
+        Unknown,
         Public,
         Private,
         Hidden
