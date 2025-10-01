@@ -14,6 +14,8 @@ namespace Napps.Windows.Assessment.Services
         private readonly ILogger _logger;
         private readonly string _thumbnailDirectory;
 
+        private readonly string _defaultImagePath;
+
         public ThumbnailService(HttpClient httpClient, ILogger logger, Config config)
         {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
@@ -22,6 +24,8 @@ namespace Napps.Windows.Assessment.Services
             _thumbnailDirectory = Path.Combine(config.ApplicationFolder, config.ThumbnailFolder);
             if (!Directory.Exists(_thumbnailDirectory))
                 Directory.CreateDirectory(_thumbnailDirectory);
+
+            _defaultImagePath = Path.Combine(config.ApplicationFolder, "Assets", "prezi_logo.png");
         }
 
         public async Task<string> DownloadAndSaveAsync(string thumbnailUrl, string thumbnailName)
@@ -35,6 +39,9 @@ namespace Napps.Windows.Assessment.Services
                 var fileName = $"{thumbnailName}{extension}";
                 var filePath = Path.Combine(_thumbnailDirectory, fileName);
 
+                if (File.Exists(filePath))
+                    return filePath;
+
                 var bytes = await _httpClient.GetByteArrayAsync(thumbnailUrl);
 
                 File.WriteAllBytes(filePath, bytes);
@@ -45,7 +52,14 @@ namespace Napps.Windows.Assessment.Services
             {
                 _logger.Error(ex, $"Failed to download thumbnail for presentation {thumbnailName} from {thumbnailUrl}");
 
-                return string.Empty; //TODO: Add default image
+                if (!File.Exists(_defaultImagePath))
+                {
+                    _logger.Error($"Default image {_defaultImagePath} not found");
+
+                    return string.Empty;
+                }
+
+                return _defaultImagePath;
             }
         }
     }

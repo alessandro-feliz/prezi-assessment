@@ -133,6 +133,15 @@ namespace Napps.Windows.Assessment.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Privacy.
+        /// </summary>
+        public static string Privacy {
+            get {
+                return ResourceManager.GetString("Privacy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hidden.
         /// </summary>
         public static string PrivacyHidden {
@@ -165,6 +174,51 @@ namespace Napps.Windows.Assessment.Properties {
         public static string PrivacyUnknown {
             get {
                 return ResourceManager.GetString("PrivacyUnknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloading presentations.
+        /// </summary>
+        public static string StatusDownloadingPresentations {
+            get {
+                return ResourceManager.GetString("StatusDownloadingPresentations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Application error. Contact support..
+        /// </summary>
+        public static string StatusError {
+            get {
+                return ResourceManager.GetString("StatusError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Offline.
+        /// </summary>
+        public static string StatusOffline {
+            get {
+                return ResourceManager.GetString("StatusOffline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Offline and no cache.
+        /// </summary>
+        public static string StatusOfflineAndNoCache {
+            get {
+                return ResourceManager.GetString("StatusOfflineAndNoCache", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Online.
+        /// </summary>
+        public static string StatusOnline {
+            get {
+                return ResourceManager.GetString("StatusOnline", resourceCulture);
             }
         }
     }

@@ -147,7 +147,25 @@
 	<data name="Description" xml:space="preserve">
 		<value>Description</value>
 	</data>
+	<data name="Privacy" xml:space="preserve">
+		<value>Privacy</value>
+	</data>
 	<data name="GoBack" xml:space="preserve">
 		<value>Go Back</value>
+	</data>
+	<data name="StatusDownloadingPresentations" xml:space="preserve">
+		<value>Downloading presentations</value>
+	</data>
+	<data name="StatusOnline" xml:space="preserve">
+		<value>Online</value>
+	</data>
+	<data name="StatusOffline" xml:space="preserve">
+		<value>Offline</value>
+	</data>
+	<data name="StatusOfflineAndNoCache" xml:space="preserve">
+		<value>Offline and no cache</value>
+	</data>
+	<data name="StatusError" xml:space="preserve">
+		<value>Application error. Contact support.</value>
 	</data>
 </root>

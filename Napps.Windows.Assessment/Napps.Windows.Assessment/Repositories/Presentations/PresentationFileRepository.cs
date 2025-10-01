@@ -26,15 +26,18 @@ namespace Napps.Windows.Assessment.Repositories.Presentations
             _presentationsFile = Path.Combine(_config.ApplicationFolder, _config.PresentationslFile);
         }
 
-        public async Task<IEnumerable<Presentation>> LoadAsync()
+        public async Task<PresentationsLoadResult> LoadAsync()
         {
             if (!File.Exists(_presentationsFile))
             {
-                _logger.Warn("No fallback file found");
-                return null;
+                _logger.Error($"File {_presentationsFile} not found");
+
+                throw new FileNotFoundException($"File {_presentationsFile} not found");
             }
 
-            return await _serializerService.DeserializeAsync<IEnumerable<Presentation>>(_presentationsFile);
+            var presentations = await _serializerService.DeserializeAsync<IEnumerable<Presentation>>(_presentationsFile);
+
+            return new PresentationsLoadResult(Mode.Offline, presentations);
         }
 
         public async Task SaveAsync(IEnumerable<Presentation> presentations)

@@ -30,7 +30,7 @@ namespace Napps.Windows.Assessment.Repositories.Presentations
             _writer = writer ?? throw new ArgumentNullException(nameof(writer));
         }
 
-        public async Task<IEnumerable<Presentation>> LoadAsync()
+        public async Task<PresentationsLoadResult> LoadAsync()
         {
             try
             {
@@ -61,7 +61,7 @@ namespace Napps.Windows.Assessment.Repositories.Presentations
 
                 await _writer.SaveAsync(presentations);
 
-                return presentations;
+                return new PresentationsLoadResult(Mode.Online, presentations);
             }
             catch (Exception ex)
             {

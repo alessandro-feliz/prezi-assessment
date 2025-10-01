@@ -8,7 +8,7 @@ namespace Napps.Windows.Assessment.Domain
         public string Id { get; private set; }
         public string Title { get; private set; }
         public string ThumbnailUrl { get; private set; }
-        public string ThumbnaiFile { get; private set; }
+        public string ThumbnailFile { get; private set; }
         public Privacy Privacy { get; private set; }
         public DateTime LastModified { get; private set; }
         public Author Author { get; private set; }
@@ -19,7 +19,7 @@ namespace Napps.Windows.Assessment.Domain
             Id = id ?? throw new ArgumentNullException(nameof(id));
             Title = title ?? throw new ArgumentNullException(nameof(title));
             ThumbnailUrl = thumbnailUrl ?? throw new ArgumentNullException(nameof(thumbnailUrl));
-            ThumbnaiFile = thumbnailFile ?? throw new ArgumentNullException(nameof(thumbnailFile));
+            ThumbnailFile = thumbnailFile ?? throw new ArgumentNullException(nameof(thumbnailFile));
             Privacy = privacy;
             LastModified = lastModified;
             Author = author;

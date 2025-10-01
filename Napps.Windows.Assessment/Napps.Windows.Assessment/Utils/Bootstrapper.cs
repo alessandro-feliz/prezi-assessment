@@ -42,6 +42,7 @@ namespace Napps.Windows.Assessment.Utils
             container.Singleton<IJsonSerializerService, JsonSerializerService>();
             container.Singleton<IFileSerializerService, BinarySerializerService>();
             container.Singleton<IThumbnailService, ThumbnailService>();
+            container.Singleton<IEventAggregator, EventAggregator>();
 
             container.Handler<IPresentationWriter>(c => c.GetInstance<PresentationFileRepository>());
             container.Handler<IPresentationReader>(c =>
