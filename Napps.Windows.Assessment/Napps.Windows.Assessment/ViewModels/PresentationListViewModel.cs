@@ -6,6 +6,7 @@ using Napps.Windows.Assessment.Repositories.Presentations.Interfaces;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -56,7 +57,7 @@ namespace Napps.Windows.Assessment.ViewModels
                 var presentationsLoadResult = await _fallbackPresentationRepository.LoadAsync(cancellationToken);
 
                 Presentations.Clear();
-                foreach (var presentation in presentationsLoadResult.Presentations)
+                foreach (var presentation in presentationsLoadResult.Presentations.OrderByDescending(p => p.LastModified))
                     Presentations.Add(presentation);
 
                 if (presentationsLoadResult.Mode == Mode.Online)
