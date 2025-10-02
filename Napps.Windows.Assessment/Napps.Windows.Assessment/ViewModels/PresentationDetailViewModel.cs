@@ -1,5 +1,5 @@
 ﻿using Caliburn.Micro;
-using Napps.Windows.Assessment.Domain;
+using Napps.Windows.Assessment.Domain.Model;
 using Napps.Windows.Assessment.Logger;
 using System;
 using System.Threading.Tasks;
@@ -12,10 +12,8 @@ namespace Napps.Windows.Assessment.ViewModels
         Task ShowPresentationListAsync();
     }
 
-    internal class PresentationDetailViewModel : Screen, IPresentationDetailViewModel
+    internal class PresentationDetailViewModel : BaseViewModel, IPresentationDetailViewModel
     {
-        private readonly ILogger _logger;
-        private readonly IEventAggregator _eventAggregator;
         private readonly IMainViewModel _mainViewModel;
 
         private Presentation _presentation;
@@ -29,10 +27,8 @@ namespace Napps.Windows.Assessment.ViewModels
             }
         }
 
-        public PresentationDetailViewModel(ILogger logger, IEventAggregator eventAggregator, IMainViewModel mainViewModel)
+        public PresentationDetailViewModel(ILogger logger, IEventAggregator eventAggregator, IMainViewModel mainViewModel) : base(logger, eventAggregator)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             _mainViewModel = mainViewModel ?? throw new ArgumentNullException(nameof(mainViewModel));
         }
 

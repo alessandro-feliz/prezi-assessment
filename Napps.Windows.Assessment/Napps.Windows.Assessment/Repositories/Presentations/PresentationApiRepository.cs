@@ -1,12 +1,13 @@
 ﻿using Napps.Windows.Assessment.Configuration;
-using Napps.Windows.Assessment.Domain;
-using Napps.Windows.Assessment.Dto;
+using Napps.Windows.Assessment.Domain.Model;
+using Napps.Windows.Assessment.Domain.Dto;
 using Napps.Windows.Assessment.Logger;
 using Napps.Windows.Assessment.Repositories.Presentations.Interfaces;
 using Napps.Windows.Assessment.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Napps.Windows.Assessment.Repositories.Presentations
@@ -30,36 +31,17 @@ namespace Napps.Windows.Assessment.Repositories.Presentations
             _writer = writer ?? throw new ArgumentNullException(nameof(writer));
         }
 
-        public async Task<PresentationsLoadResult> LoadAsync()
+        public async Task<PresentationsLoadResult> LoadAsync(CancellationToken cancellationToken)
         {
             try
             {
-                var response = await _httpClient.GetAsync(_config.PresentationsEndpoint);
-                response.EnsureSuccessStatusCode();
+                var presentationsDto = await FeatchPresentationsDtoAsync(cancellationToken);
 
-                var json = await response.Content.ReadAsStringAsync();
+                var downloadedThumbnailPaths = await DownloadPresentationThumbnails(presentationsDto, cancellationToken);
 
-                var presentations = new List<Presentation>();
+                var presentations = BuildPresentations(presentationsDto, downloadedThumbnailPaths);
 
-                var presentationsDto = await _serializerService.DeserializeAsync<PresentationsDto>(json);
-
-                foreach (var p in presentationsDto.Presentations)
-                {
-                    presentations.Add(
-                          new Presentation(
-                              p.Id,
-                              p.Title,
-                              p.ThumbnailUrl,
-                              await _thumbnailService.DownloadAndSaveAsync(p.ThumbnailUrl, p.Id),
-                              Enum.TryParse<Privacy>(p.Privacy, out var parsedPrivacy) ? parsedPrivacy : Privacy.Hidden,
-                              p.LastModified,
-                              new Author(p.Owner.Id, p.Owner.FirstName, p.Owner.LastName),
-                              p.Description
-                          )
-                      );
-                }
-
-                await _writer.SaveAsync(presentations);
+                await _writer.SaveAsync(presentations, cancellationToken);
 
                 return new PresentationsLoadResult(Mode.Online, presentations);
             }
@@ -67,8 +49,55 @@ namespace Napps.Windows.Assessment.Repositories.Presentations
             {
                 _logger.Error(ex, $"Error fetching presentations from API");
 
-                throw ex;
+                throw;
             }
+        }
+
+        private static IEnumerable<Presentation> BuildPresentations(PresentationsDto presentationsDto, string[] downloadedThumbnailPaths)
+        {
+            var presentations = new List<Presentation>();
+
+            for (int i = 0; i < presentationsDto.Presentations.Count; i++)
+            {
+                var p = presentationsDto.Presentations[i];
+
+                presentations.Add(
+                      new Presentation(
+                          p.Id,
+                          p.Title,
+                          p.ThumbnailUrl,
+                          downloadedThumbnailPaths[i],
+                          Enum.TryParse<Privacy>(p.Privacy, out var parsedPrivacy) ? parsedPrivacy : Privacy.Hidden,
+                          p.LastModified,
+                          new Author(p.Owner.Id, p.Owner.FirstName, p.Owner.LastName),
+                          p.Description
+                      )
+                  );
+            }
+
+            return presentations;
+        }
+
+        private async Task<string[]> DownloadPresentationThumbnails(PresentationsDto presentationsDto, CancellationToken cancellationToken)
+        {
+            var downloadThumbnailTasks = new List<Task<string>>();
+
+            foreach (var presentationDto in presentationsDto.Presentations)
+            {
+                downloadThumbnailTasks.Add(_thumbnailService.DownloadAndSaveAsync(presentationDto.ThumbnailUrl, presentationDto.Id, cancellationToken));
+            }
+
+            return await Task.WhenAll(downloadThumbnailTasks);
+        }
+
+        private async Task<PresentationsDto> FeatchPresentationsDtoAsync(CancellationToken cancellationToken)
+        {
+            var response = await _httpClient.GetAsync(_config.PresentationsEndpoint, cancellationToken);
+            response.EnsureSuccessStatusCode();
+
+            var json = await response.Content.ReadAsStringAsync();
+
+            return await _serializerService.DeserializeAsync<PresentationsDto>(json, cancellationToken);
         }
     }
 }

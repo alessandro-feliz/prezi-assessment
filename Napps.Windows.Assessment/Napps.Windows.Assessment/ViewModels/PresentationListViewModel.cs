@@ -1,5 +1,5 @@
 ﻿using Caliburn.Micro;
-using Napps.Windows.Assessment.Domain;
+using Napps.Windows.Assessment.Domain.Model;
 using Napps.Windows.Assessment.Logger;
 using Napps.Windows.Assessment.Properties;
 using Napps.Windows.Assessment.Repositories.Presentations.Interfaces;
@@ -18,10 +18,8 @@ namespace Napps.Windows.Assessment.ViewModels
         Task ShowPresentationDetailsAsync();
     }
 
-    internal class PresentationListViewModel : Screen, IPresentationListViewModel
+    internal class PresentationListViewModel : BaseViewModel, IPresentationListViewModel
     {
-        private readonly ILogger _logger;
-        private readonly IEventAggregator _eventAggregator;
         private readonly IMainViewModel _mainViewModel;
         private readonly IPresentationReader _fallbackPresentationRepository;
 
@@ -38,26 +36,24 @@ namespace Napps.Windows.Assessment.ViewModels
             }
         }
 
-        public PresentationListViewModel(ILogger logger, IEventAggregator eventAggregator, IMainViewModel mainViewModel, IPresentationReader fallbackPresentationRepository)
+        public PresentationListViewModel(ILogger logger, IEventAggregator eventAggregator, IMainViewModel mainViewModel, IPresentationReader fallbackPresentationRepository) : base(logger, eventAggregator)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             _mainViewModel = mainViewModel ?? throw new ArgumentNullException(nameof(mainViewModel));
             _fallbackPresentationRepository = fallbackPresentationRepository ?? throw new ArgumentNullException(nameof(fallbackPresentationRepository));
         }
 
         protected override async Task OnActivateAsync(CancellationToken cancellationToken)
         {
-            await InitializeAsync();
+            await InitializeAsync(cancellationToken);
         }
 
-        public async Task InitializeAsync()
+        public async Task InitializeAsync(CancellationToken cancellationToken)
         {
-            await _eventAggregator.PublishOnUIThreadAsync(new Status() { Message = Resources.StatusDownloadingPresentations });
+            await NotifyStatusAsync(Resources.StatusDownloadingPresentations);
 
             try
             {
-                var presentationsLoadResult = await _fallbackPresentationRepository.LoadAsync();
+                var presentationsLoadResult = await _fallbackPresentationRepository.LoadAsync(cancellationToken);
 
                 Presentations.Clear();
                 foreach (var presentation in presentationsLoadResult.Presentations)
@@ -65,22 +61,23 @@ namespace Napps.Windows.Assessment.ViewModels
 
                 if (presentationsLoadResult.Mode == Mode.Online)
                 {
-                    await _eventAggregator.PublishOnUIThreadAsync(new Status() { Message = Resources.StatusOnline, ProgressStatus = ProgressStatus.Online });
+
+                    await NotifyStatusAsync(Resources.StatusOnline, ProgressStatus.Online);
                 }
                 else
                 {
-                    await _eventAggregator.PublishOnUIThreadAsync(new Status() { Message = Resources.StatusOffline, ProgressStatus = ProgressStatus.Offline });
+                    await NotifyStatusAsync(Resources.StatusOffline, ProgressStatus.Offline);
                 }
             }
             catch (FileNotFoundException)
             {
-                await _eventAggregator.PublishOnUIThreadAsync(new Status() { Message = Resources.StatusOfflineAndNoCache, ProgressStatus = ProgressStatus.Error });
+                await NotifyStatusAsync(Resources.StatusOfflineAndNoCache, ProgressStatus.Error);
             }
             catch (Exception ex)
             {
                 _logger.Error(ex, $"Unhandled exception while fetching presentations");
 
-                await _eventAggregator.PublishOnUIThreadAsync(new Status() { Message = Resources.StatusError, ProgressStatus = ProgressStatus.Error });
+                await NotifyStatusAsync(Resources.StatusError, ProgressStatus.Error);
             }
         }
 

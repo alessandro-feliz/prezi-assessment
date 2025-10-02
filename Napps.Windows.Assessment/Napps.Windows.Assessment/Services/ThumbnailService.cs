@@ -4,6 +4,7 @@ using Napps.Windows.Assessment.Services.Interfaces;
 using System;
 using System.IO;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Napps.Windows.Assessment.Services
@@ -25,10 +26,10 @@ namespace Napps.Windows.Assessment.Services
             if (!Directory.Exists(_thumbnailDirectory))
                 Directory.CreateDirectory(_thumbnailDirectory);
 
-            _defaultImagePath = Path.Combine(config.ApplicationFolder, "Assets", "prezi_logo.png");
+            _defaultImagePath = Path.Combine(config.ApplicationFolder, "Assets", "Images", "prezi_logo.png");
         }
 
-        public async Task<string> DownloadAndSaveAsync(string thumbnailUrl, string thumbnailName)
+        public async Task<string> DownloadAndSaveAsync(string thumbnailUrl, string thumbnailName, CancellationToken cancellationToken)
         {
             if (string.IsNullOrWhiteSpace(thumbnailUrl)) throw new ArgumentNullException(nameof(thumbnailUrl));
             if (string.IsNullOrWhiteSpace(thumbnailName)) throw new ArgumentNullException(nameof(thumbnailName));

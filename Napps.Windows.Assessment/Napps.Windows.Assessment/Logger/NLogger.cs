@@ -17,6 +17,11 @@ namespace Napps.Windows.Assessment.Logger
             _logger.Debug(message, args);
         }
 
+        public void Info(string message, params object[] args)
+        {
+            _logger.Info(message, args);
+        }
+
         public void Warn(string message, params object[] args)
         {
             _logger.Warn(message, args);

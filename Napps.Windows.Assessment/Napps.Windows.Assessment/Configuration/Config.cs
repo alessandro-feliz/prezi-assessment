@@ -8,6 +8,6 @@ namespace Napps.Windows.Assessment.Configuration
         public TimeSpan PresentationsEndpointTimeout { get; set; }
         public string ApplicationFolder { get; set; }
         public string ThumbnailFolder { get; set; }
-        public string PresentationslFile { get; set; }
+        public string PresentationsFile { get; set; }
     }
 }

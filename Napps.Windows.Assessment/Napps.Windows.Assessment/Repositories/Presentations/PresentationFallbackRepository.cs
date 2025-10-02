@@ -1,7 +1,8 @@
-﻿using Napps.Windows.Assessment.Domain;
+﻿using Napps.Windows.Assessment.Domain.Model;
 using Napps.Windows.Assessment.Logger;
 using Napps.Windows.Assessment.Repositories.Presentations.Interfaces;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Napps.Windows.Assessment.Repositories.Presentations
@@ -19,17 +20,17 @@ namespace Napps.Windows.Assessment.Repositories.Presentations
             _presentationFileRepository = presentationFileRepository ?? throw new ArgumentNullException(nameof(presentationFileRepository));
         }
 
-        public async Task<PresentationsLoadResult> LoadAsync()
+        public async Task<PresentationsLoadResult> LoadAsync(CancellationToken cancellationToken)
         {
             try
             {
-                return await _presentationApiRepository.LoadAsync();
+                return await _presentationApiRepository.LoadAsync(cancellationToken);
             }
             catch
             {
                 _logger.Warn("Couldn't fetch presentations from API, using fallback mode");
 
-                return await _presentationFileRepository.LoadAsync();
+                return await _presentationFileRepository.LoadAsync(cancellationToken);
             }
         }
     }

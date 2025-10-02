@@ -2,13 +2,14 @@
 using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Napps.Windows.Assessment.Services
 {
     internal class BinarySerializerService : IFileSerializerService
     {
-        public Task SerializeAsync<T>(T obj, string filePath)
+        public Task SerializeAsync<T>(T obj, string filePath, CancellationToken cancellationToken)
         {
             if (obj == null) throw new ArgumentNullException(nameof(obj));
 
@@ -20,10 +21,10 @@ namespace Napps.Windows.Assessment.Services
                 {
                     new BinaryFormatter().Serialize(fs, obj);
                 }
-            });
+            }, cancellationToken);
         }
 
-        public Task<T> DeserializeAsync<T>(string filePath)
+        public Task<T> DeserializeAsync<T>(string filePath, CancellationToken cancellationToken)
         {
             EnsureFileExists(filePath);
 
@@ -33,7 +34,7 @@ namespace Napps.Windows.Assessment.Services
                 {
                     return (T)new BinaryFormatter().Deserialize(fs);
                 }
-            });
+            }, cancellationToken);
         }
 
         private void EnsureFileExists(string filePath)

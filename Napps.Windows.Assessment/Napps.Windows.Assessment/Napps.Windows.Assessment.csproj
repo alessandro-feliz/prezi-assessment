@@ -172,24 +172,24 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Configuration\Config.cs" />
-    <Compile Include="Configuration\ConfigManager.cs" />
+    <Compile Include="Configuration\ConfigProvider.cs" />
     <Compile Include="Controls\StatusControl.xaml.cs">
       <DependentUpon>StatusControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\ImageSourceToBitmapConverter.cs" />
     <Compile Include="Converters\PrivacyEnumToStringConverter.cs" />
     <Compile Include="Converters\ProgressStatusEnumToBrushConverter.cs" />
-    <Compile Include="Domain\Author.cs" />
-    <Compile Include="Domain\Name.cs" />
-    <Compile Include="Domain\Presentation.cs" />
-    <Compile Include="Domain\PresentationsLoadResult.cs" />
-    <Compile Include="Domain\Privacy.cs" />
-    <Compile Include="Domain\ProgressStatus.cs" />
-    <Compile Include="Domain\Status.cs" />
-    <Compile Include="Domain\Mode.cs" />
-    <Compile Include="Dto\OwnerDto.cs" />
-    <Compile Include="Dto\PresentationDto.cs" />
-    <Compile Include="Dto\PresentationsDto.cs" />
+    <Compile Include="Domain\Model\Author.cs" />
+    <Compile Include="Domain\Model\Name.cs" />
+    <Compile Include="Domain\Model\Presentation.cs" />
+    <Compile Include="Domain\Model\PresentationsLoadResult.cs" />
+    <Compile Include="Domain\Model\Privacy.cs" />
+    <Compile Include="Domain\Model\ProgressStatus.cs" />
+    <Compile Include="Domain\Model\Status.cs" />
+    <Compile Include="Domain\Model\Mode.cs" />
+    <Compile Include="Domain\Dto\OwnerDto.cs" />
+    <Compile Include="Domain\Dto\PresentationDto.cs" />
+    <Compile Include="Domain\Dto\PresentationsDto.cs" />
     <Compile Include="Logger\ILogger.cs" />
     <Compile Include="Logger\NLogger.cs" />
     <Compile Include="Repositories\Presentations\PresentationApiRepository.cs" />
@@ -206,6 +206,7 @@
     <Compile Include="Utils\Bootstrapper.cs" />
     <Compile Include="Utils\CrashReporter.cs" />
     <Compile Include="Utils\DependencyContainer.cs" />
+    <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\PresentationDetailViewModel.cs" />
     <Compile Include="ViewModels\PresentationListViewModel.cs" />
@@ -295,10 +296,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\prezi.ico" />
+    <Resource Include="Assets\Icons\prezi.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\prezi_logo.png">
+    <Content Include="Assets\Images\prezi_logo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

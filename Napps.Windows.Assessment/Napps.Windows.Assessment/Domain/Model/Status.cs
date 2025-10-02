@@ -1,4 +1,4 @@
-﻿namespace Napps.Windows.Assessment.Domain
+﻿namespace Napps.Windows.Assessment.Domain.Model
 {
     public class Status
     {

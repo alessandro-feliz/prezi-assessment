@@ -1,5 +1,5 @@
 ﻿using Caliburn.Micro;
-using Napps.Windows.Assessment.Domain;
+using Napps.Windows.Assessment.Domain.Model;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -67,7 +67,7 @@ namespace Napps.Windows.Assessment.ViewModels
             Status = new Status()
             {
                 Message = status.Message,
-                ProgressStatus = status.ProgressStatus.HasValue ? status.ProgressStatus.Value : Status?.ProgressStatus
+                ProgressStatus = status.ProgressStatus ?? Status?.ProgressStatus
             };
 
             return Task.CompletedTask;

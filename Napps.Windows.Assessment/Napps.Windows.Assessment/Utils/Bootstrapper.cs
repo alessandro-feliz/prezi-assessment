@@ -28,31 +28,30 @@ namespace Napps.Windows.Assessment.Utils
             container = new SimpleContainer();
             container.Instance(container);
 
+            // Core
             container.Singleton<ILogger, NLogger>();
             container.Singleton<IWindowManager, WindowManager>();
             container.Singleton<ICrashReporter, CrashReporter>();
+            container.Singleton<IConfigProvider, ConfigProvider>();
 
-            var config = ConfigManager.LoadFromFile();
+            // Config
+            var config = container.GetInstance<IConfigProvider>().Load();
             container.Instance(config);
 
+            // HttpClient
             container.Instance(new HttpClient() { Timeout = config.PresentationsEndpointTimeout });
 
+            // Repos and Services
             container.Singleton<PresentationApiRepository>();
             container.Singleton<PresentationFileRepository>();
             container.Singleton<IJsonSerializerService, JsonSerializerService>();
             container.Singleton<IFileSerializerService, BinarySerializerService>();
             container.Singleton<IThumbnailService, ThumbnailService>();
             container.Singleton<IEventAggregator, EventAggregator>();
-
             container.Handler<IPresentationWriter>(c => c.GetInstance<PresentationFileRepository>());
-            container.Handler<IPresentationReader>(c =>
-                new PresentationFallbackRepository(
-                    c.GetInstance<ILogger>(),
-                    c.GetInstance<PresentationApiRepository>(),
-                    c.GetInstance<PresentationFileRepository>()
-                )
-            );
+            container.Handler<IPresentationReader>(c => new PresentationFallbackRepository(c.GetInstance<ILogger>(), c.GetInstance<PresentationApiRepository>(), c.GetInstance<PresentationFileRepository>()));
 
+            // Views
             container.Singleton<IMainViewModel, MainViewModel>();
             container.PerRequest<IPresentationListViewModel, PresentationListViewModel>();
             container.PerRequest<IPresentationDetailViewModel, PresentationDetailViewModel>();

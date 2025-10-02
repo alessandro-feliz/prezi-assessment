@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Napps.Windows.Assessment.Domain
+namespace Napps.Windows.Assessment.Domain.Model
 {
     public class PresentationsLoadResult
     {

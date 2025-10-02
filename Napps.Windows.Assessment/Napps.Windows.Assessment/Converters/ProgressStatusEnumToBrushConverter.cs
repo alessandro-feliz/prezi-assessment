@@ -1,4 +1,4 @@
-﻿using Napps.Windows.Assessment.Domain;
+﻿using Napps.Windows.Assessment.Domain.Model;
 using System;
 using System.Globalization;
 using System.Windows.Data;

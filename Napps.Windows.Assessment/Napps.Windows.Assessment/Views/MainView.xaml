@@ -8,7 +8,7 @@
         xmlns:res="clr-namespace:Napps.Windows.Assessment.Properties"
         xmlns:controls="clr-namespace:Napps.Windows.Assessment.Controls"
         Title="{x:Static res:Resources.ApplicationTitle}"
-        Icon="/Assets/prezi.ico"
+        Icon="/Assets/Icons/prezi.ico"
         MinWidth="800"
         MinHeight="600"
         mc:Ignorable="d">

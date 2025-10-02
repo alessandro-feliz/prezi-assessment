@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Napps.Windows.Assessment.Dto
+namespace Napps.Windows.Assessment.Domain.Dto
 {
     public class PresentationDto
     {
