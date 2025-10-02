@@ -1,7 +1,9 @@
 ﻿using Caliburn.Micro;
 using Napps.Windows.Assessment.Domain.Model;
 using Napps.Windows.Assessment.Logger;
+using Napps.Windows.Assessment.Services.Interfaces;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Napps.Windows.Assessment.ViewModels
@@ -12,9 +14,10 @@ namespace Napps.Windows.Assessment.ViewModels
         Task ShowPresentationListAsync();
     }
 
-    internal class PresentationDetailViewModel : BaseViewModel, IPresentationDetailViewModel
+    internal class PresentationDetailViewModel : Screen, IPresentationDetailViewModel
     {
-        private readonly IMainViewModel _mainViewModel;
+        private readonly ILogger _logger;
+        private readonly IViewNavigationService _navigationService;
 
         private Presentation _presentation;
         public Presentation Presentation
@@ -27,14 +30,21 @@ namespace Napps.Windows.Assessment.ViewModels
             }
         }
 
-        public PresentationDetailViewModel(ILogger logger, IEventAggregator eventAggregator, IMainViewModel mainViewModel) : base(logger, eventAggregator)
+        public PresentationDetailViewModel(ILogger logger, IViewNavigationService navigationService)
         {
-            _mainViewModel = mainViewModel ?? throw new ArgumentNullException(nameof(mainViewModel));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+        }
+
+        protected override Task OnActivateAsync(CancellationToken cancellationToken)
+        {
+            _logger.Info($"Acessing presentation {Presentation.Id}");
+            return Task.CompletedTask;
         }
 
         public async Task ShowPresentationListAsync()
         {
-            await _mainViewModel.ShowPresentationListView();
+            await _navigationService.ShowPresentationListViewAsync();
         }
     }
 }

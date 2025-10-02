@@ -1,18 +1,15 @@
 ﻿using Caliburn.Micro;
 using Napps.Windows.Assessment.Domain.Model;
+using Napps.Windows.Assessment.Services.Interfaces;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Napps.Windows.Assessment.ViewModels
 {
-    public interface IMainViewModel
-    {
-        Task ShowPresentationListView(CancellationToken cancellationToken = default);
-        Task ShowPresentationDetailsView(Presentation selectedItem, CancellationToken cancellationToken = default);
-    }
+    public interface IMainViewModel { }
 
-    internal class MainViewModel : Conductor<IScreen>.Collection.OneActive, IMainViewModel, IHandle<Status>
+    internal class MainViewModel : Conductor<IScreen>.Collection.OneActive, IMainViewModel, IBusyIndicatorService, IViewNavigationService, IHandle<Status>
     {
         private readonly SimpleContainer _container;
         private readonly IEventAggregator _eventAggregator;
@@ -24,7 +21,7 @@ namespace Napps.Windows.Assessment.ViewModels
             set
             {
                 _status = value;
-                NotifyOfPropertyChange(() => Status);
+                NotifyOfPropertyChange(nameof(Status));
             }
         }
 
@@ -37,30 +34,32 @@ namespace Napps.Windows.Assessment.ViewModels
         protected override async Task OnActivateAsync(CancellationToken cancellationToken)
         {
             _eventAggregator.SubscribeOnPublishedThread(this);
-
-            await ShowPresentationListView(cancellationToken);
+            await ShowPresentationListViewAsync(cancellationToken);
             await base.OnActivateAsync(cancellationToken);
         }
 
         protected override async Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
         {
             _eventAggregator.Unsubscribe(this);
-
             await base.OnDeactivateAsync(close, cancellationToken);
         }
 
-        public async Task ShowPresentationListView(CancellationToken cancellationToken = default)
+        // IViewNavigationService Implementation
+
+        public async Task ShowPresentationListViewAsync(CancellationToken cancellationToken = default)
         {
             var presentationListViewModel = _container.GetInstance<IPresentationListViewModel>();
             await ActivateItemAsync(presentationListViewModel, cancellationToken);
         }
 
-        public async Task ShowPresentationDetailsView(Presentation selectedItem, CancellationToken cancellationToken = default)
+        public async Task ShowPresentationDetailsViewAsync(Presentation selectedItem, CancellationToken cancellationToken = default)
         {
             var presentationDetailViewModel = _container.GetInstance<IPresentationDetailViewModel>();
             presentationDetailViewModel.Presentation = selectedItem;
             await ActivateItemAsync(presentationDetailViewModel, cancellationToken);
         }
+
+        // IHandle<Status> Implementation
 
         public Task HandleAsync(Status status, CancellationToken cancellationToken)
         {
@@ -72,5 +71,21 @@ namespace Napps.Windows.Assessment.ViewModels
 
             return Task.CompletedTask;
         }
+
+        // IBusyIndicator Implementation
+
+        private bool _isBusy;
+        public bool IsBusy
+        {
+            get => _isBusy;
+            set
+            {
+                _isBusy = value;
+                NotifyOfPropertyChange(nameof(IsBusy));
+            }
+        }
+
+        public void Show() => IsBusy = true;
+        public void Hide() => IsBusy = false;
     }
 }

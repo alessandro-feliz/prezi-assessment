@@ -176,6 +176,7 @@
     <Compile Include="Controls\StatusControl.xaml.cs">
       <DependentUpon>StatusControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\ImageSourceToBitmapConverter.cs" />
     <Compile Include="Converters\PrivacyEnumToStringConverter.cs" />
     <Compile Include="Converters\ProgressStatusEnumToBrushConverter.cs" />
@@ -198,15 +199,16 @@
     <Compile Include="Repositories\Presentations\Interfaces\IPresentationReader.cs" />
     <Compile Include="Repositories\Presentations\Interfaces\IPresentationWriter.cs" />
     <Compile Include="Services\BinarySerializerService.cs" />
+    <Compile Include="Services\Interfaces\IBusyIndicatorService.cs" />
     <Compile Include="Services\Interfaces\IFileSerializerService.cs" />
     <Compile Include="Services\Interfaces\IJsonSerializerService.cs" />
+    <Compile Include="Services\Interfaces\IViewNavigationService.cs" />
     <Compile Include="Services\Interfaces\IThumbnailService.cs" />
     <Compile Include="Services\JsonSerializerService.cs" />
     <Compile Include="Services\ThumbnailService.cs" />
     <Compile Include="Utils\Bootstrapper.cs" />
     <Compile Include="Utils\CrashReporter.cs" />
     <Compile Include="Utils\DependencyContainer.cs" />
-    <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\PresentationDetailViewModel.cs" />
     <Compile Include="ViewModels\PresentationListViewModel.cs" />
@@ -302,6 +304,7 @@
     <Content Include="Assets\Images\prezi_logo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Assets\Images\spinner.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

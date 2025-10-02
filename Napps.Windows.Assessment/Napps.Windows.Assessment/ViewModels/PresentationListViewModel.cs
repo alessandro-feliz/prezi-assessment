@@ -3,6 +3,7 @@ using Napps.Windows.Assessment.Domain.Model;
 using Napps.Windows.Assessment.Logger;
 using Napps.Windows.Assessment.Properties;
 using Napps.Windows.Assessment.Repositories.Presentations.Interfaces;
+using Napps.Windows.Assessment.Services.Interfaces;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -19,9 +20,12 @@ namespace Napps.Windows.Assessment.ViewModels
         Task ShowPresentationDetailsAsync();
     }
 
-    internal class PresentationListViewModel : BaseViewModel, IPresentationListViewModel
+    internal class PresentationListViewModel : Screen, IPresentationListViewModel
     {
-        private readonly IMainViewModel _mainViewModel;
+        private readonly ILogger _logger;
+        private readonly IViewNavigationService _navigationService;
+        private readonly IEventAggregator _eventAggregator;
+        private readonly IBusyIndicatorService _busyIndicator;
         private readonly IPresentationReader _fallbackPresentationRepository;
 
         public ObservableCollection<Presentation> Presentations { get; } = new ObservableCollection<Presentation>();
@@ -37,9 +41,12 @@ namespace Napps.Windows.Assessment.ViewModels
             }
         }
 
-        public PresentationListViewModel(ILogger logger, IEventAggregator eventAggregator, IMainViewModel mainViewModel, IPresentationReader fallbackPresentationRepository) : base(logger, eventAggregator)
+        public PresentationListViewModel(ILogger logger, IViewNavigationService navigationService, IEventAggregator eventAggregator, IBusyIndicatorService busyIndicator, IPresentationReader fallbackPresentationRepository)
         {
-            _mainViewModel = mainViewModel ?? throw new ArgumentNullException(nameof(mainViewModel));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+            _eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+            _busyIndicator = busyIndicator ?? throw new ArgumentNullException(nameof(busyIndicator));
             _fallbackPresentationRepository = fallbackPresentationRepository ?? throw new ArgumentNullException(nameof(fallbackPresentationRepository));
         }
 
@@ -50,7 +57,9 @@ namespace Napps.Windows.Assessment.ViewModels
 
         public async Task InitializeAsync(CancellationToken cancellationToken)
         {
-            await NotifyStatusAsync(Resources.StatusDownloadingPresentations);
+            _busyIndicator.Show();
+
+            await _eventAggregator.PublishOnUIThreadAsync(new Status() { Message = Resources.StatusDownloadingPresentations });
 
             try
             {
@@ -62,30 +71,32 @@ namespace Napps.Windows.Assessment.ViewModels
 
                 if (presentationsLoadResult.Mode == Mode.Online)
                 {
-
-                    await NotifyStatusAsync(Resources.StatusOnline, ProgressStatus.Online);
+                    await _eventAggregator.PublishOnUIThreadAsync(new Status() { Message = Resources.StatusOnline, ProgressStatus = ProgressStatus.Online });
                 }
                 else
                 {
-                    await NotifyStatusAsync(Resources.StatusOffline, ProgressStatus.Offline);
+                    await _eventAggregator.PublishOnUIThreadAsync(new Status() { Message = Resources.StatusOffline, ProgressStatus = ProgressStatus.Offline });
                 }
             }
             catch (FileNotFoundException)
             {
-                await NotifyStatusAsync(Resources.StatusOfflineAndNoCache, ProgressStatus.Error);
+                await _eventAggregator.PublishOnUIThreadAsync(new Status() { Message = Resources.StatusOfflineAndNoCache, ProgressStatus = ProgressStatus.Error });
             }
             catch (Exception ex)
             {
                 _logger.Error(ex, $"Unhandled exception while fetching presentations");
 
-                await NotifyStatusAsync(Resources.StatusError, ProgressStatus.Error);
+                await _eventAggregator.PublishOnUIThreadAsync(new Status() { Message = Resources.StatusError, ProgressStatus = ProgressStatus.Error });
+            }
+            finally
+            {
+                _busyIndicator.Hide();
             }
         }
 
         public async Task ShowPresentationDetailsAsync()
         {
-            if (SelectedPresentation != null)
-                await _mainViewModel.ShowPresentationDetailsView(SelectedPresentation);
+            await _navigationService.ShowPresentationDetailsViewAsync(SelectedPresentation);
         }
     }
 }

@@ -12,11 +12,28 @@
         MinWidth="800"
         MinHeight="600"
         mc:Ignorable="d">
-    <DockPanel>
+    <Grid>
+        <!-- Main UI -->
+        <DockPanel>
+            
+            <!-- Status bar -->
+            <controls:StatusControl DataContext="{Binding Status}" DockPanel.Dock="Bottom" />
+            
+            <!-- View -->
+            <ContentControl cal:View.Model="{Binding ActiveItem}" />
+            
+        </DockPanel>
+
+        <!-- Busy overlay -->
+        <Grid Background="#80000000" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Image Width="64" Height="64"
+                       Source="/Assets/Images/spinner.gif"
+                       Stretch="UniformToFill" />
+                <TextBlock Text="{x:Static res:Resources.Loading}"
+                           Foreground="White" FontSize="16" Margin="10" HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
         
-        <controls:StatusControl DataContext="{Binding Status}" DockPanel.Dock="Bottom" />
-
-        <ContentControl cal:View.Model="{Binding ActiveItem}" />
-
-    </DockPanel>
+    </Grid>
 </Window>

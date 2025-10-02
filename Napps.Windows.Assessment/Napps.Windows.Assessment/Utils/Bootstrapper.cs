@@ -56,6 +56,9 @@ namespace Napps.Windows.Assessment.Utils
             container.PerRequest<IPresentationListViewModel, PresentationListViewModel>();
             container.PerRequest<IPresentationDetailViewModel, PresentationDetailViewModel>();
 
+            container.Handler<IBusyIndicatorService>(c => c.GetInstance<IMainViewModel>());
+            container.Handler<IViewNavigationService>(c => c.GetInstance<IMainViewModel>());
+
             container.Handler<IDependencyContainer>(simpleContainer => new DependencyContainer(simpleContainer));
         }
 

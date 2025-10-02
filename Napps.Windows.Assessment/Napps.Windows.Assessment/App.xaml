@@ -16,6 +16,7 @@
             <converters:PrivacyEnumToStringConverter x:Key="PrivacyEnumToStringConverter" />
             <converters:ProgressStatusEnumToBrushConverter x:Key="ProgressStatusEnumToBrushConverter" />
             <converters:ImageSourceToBitmapConverter x:Key="ImageSourceToBitmapConverter" />
+            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
