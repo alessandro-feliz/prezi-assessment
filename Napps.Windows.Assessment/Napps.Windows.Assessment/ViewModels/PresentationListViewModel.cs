@@ -20,7 +20,7 @@ namespace Napps.Windows.Assessment.ViewModels
         Task ShowPresentationDetailsAsync();
     }
 
-    internal class PresentationListViewModel : Screen, IPresentationListViewModel
+    public class PresentationListViewModel : Screen, IPresentationListViewModel
     {
         private readonly ILogger _logger;
         private readonly IViewNavigationService _navigationService;

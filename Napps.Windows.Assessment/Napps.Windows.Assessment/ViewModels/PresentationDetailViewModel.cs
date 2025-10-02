@@ -14,7 +14,7 @@ namespace Napps.Windows.Assessment.ViewModels
         Task ShowPresentationListAsync();
     }
 
-    internal class PresentationDetailViewModel : Screen, IPresentationDetailViewModel
+    public class PresentationDetailViewModel : Screen, IPresentationDetailViewModel
     {
         private readonly ILogger _logger;
         private readonly IViewNavigationService _navigationService;
@@ -38,7 +38,7 @@ namespace Napps.Windows.Assessment.ViewModels
 
         protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {
-            _logger.Info($"Acessing presentation {Presentation.Id}");
+            _logger.Info($"Accessing presentation {Presentation.Id}");
             return Task.CompletedTask;
         }
 

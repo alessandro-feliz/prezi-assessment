@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36401.2 d17.14
+VisualStudioVersion = 17.14.36401.2
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Napps.Windows.Assessment", "Napps.Windows.Assessment\Napps.Windows.Assessment.csproj", "{D9793C2D-61F4-4E66-BC9C-2E0EBA981111}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Napps.Windows.Assessment.Tests", "Napps.Windows.Assessment.Tests\Napps.Windows.Assessment.Tests.csproj", "{CB06B66A-EADF-4FF7-AE1D-C7180BE6A0DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{D9793C2D-61F4-4E66-BC9C-2E0EBA981111}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9793C2D-61F4-4E66-BC9C-2E0EBA981111}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9793C2D-61F4-4E66-BC9C-2E0EBA981111}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB06B66A-EADF-4FF7-AE1D-C7180BE6A0DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB06B66A-EADF-4FF7-AE1D-C7180BE6A0DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB06B66A-EADF-4FF7-AE1D-C7180BE6A0DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB06B66A-EADF-4FF7-AE1D-C7180BE6A0DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
